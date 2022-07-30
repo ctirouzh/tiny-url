@@ -7,6 +7,7 @@
         "host": "localhost",
         "port": "6379",
         "address": "localhost:6379",
+        "ttl_hour": 1,
         "lfu": {
             "size": 10000,
             "ttl_minute": 1

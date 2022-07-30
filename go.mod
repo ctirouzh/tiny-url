@@ -8,6 +8,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gocql/gocql v1.2.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/teris-io/shortid v0.0.0-20220617161101-71ec9f2aa569
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
 )
 

@@ -9,3 +9,8 @@ type URL struct {
 	ExpirationDate time.Time `json:"expiration_date,omitempty"`
 	UserID         string    `json:"user_id"`
 }
+
+type URLCache interface {
+	SetURL(url *URL)
+	GetURL(hash string) *URL
+}

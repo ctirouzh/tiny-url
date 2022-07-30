@@ -16,10 +16,11 @@ type LFU struct {
 	TTL  time.Duration `json:"ttl_minute"`
 }
 type Redis struct {
-	Host    string `json:"host"`
-	Port    string `json:"port"`
-	Address string `json:"address"`
-	LFU     LFU    `json:"lfu"`
+	Host    string        `json:"host"`
+	Port    string        `json:"port"`
+	Address string        `json:"address"`
+	TTL     time.Duration `json:"ttl_hour"`
+	LFU     LFU           `json:"lfu"`
 }
 
 type Cassandra struct {
@@ -57,6 +58,7 @@ func Load() (*Config, error) {
 		return nil, err
 	}
 	config.JWT.TTL *= time.Minute
+	config.Redis.TTL *= time.Hour
 	config.Redis.LFU.TTL *= time.Minute
 	return &config, nil
 }
