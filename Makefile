@@ -23,9 +23,9 @@ db-drop:
 	sudo docker exec -d tinyurl-cassandra-db cqlsh localhost -f /drop_db.cql
 
 cache-start: 
-	sudo start tinyurl-redis-cache
+	sudo docker start tinyurl-redis-cache
 
 cache-stop:
-	sudo stop tinyurl-redis-cache
+	sudo docker stop tinyurl-redis-cache
 
 .PHONY: server cassandra redis
