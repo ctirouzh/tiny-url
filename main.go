@@ -22,13 +22,10 @@ func main() {
 	}
 
 	fmt.Println("is cassandra session closed?", cassandra.Session.Closed())
+	cache := storage.GetRedisCache(cfg.Redis.Address)
+	fmt.Println(cache)
 
-	md, err := cassandra.Session.KeyspaceMetadata(cfg.Cassandra.KeySpace)
-	if err != nil {
-		fmt.Println("[main]<--", err)
+	for i := 1; i < 5; i++ {
+		storage.GetRedisCache(cfg.Redis.Address)
 	}
-	fmt.Printf("[main]--> keyspace metadata:"+
-		"name=%s, tables=%v, user-types= %v\n", md.Name, md.Tables, md.UserTypes,
-	)
-
 }
