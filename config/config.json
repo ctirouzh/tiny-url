@@ -18,6 +18,11 @@
         "key_space": "tinyurl"
 
     },
+    "jwt": {
+        "ttl_minute": 20, 
+        "secret": "set_a_secret_key",
+        "issuer": "set_an_issuer"
+    },
     "options": {
         "schema": "http",
         "prefix": "localhost:8080"

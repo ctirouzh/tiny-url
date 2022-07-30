@@ -6,6 +6,7 @@ import (
 
 	"github.com/ctirouzh/tiny-url/config"
 	"github.com/ctirouzh/tiny-url/middleware"
+	"github.com/ctirouzh/tiny-url/service"
 	"github.com/ctirouzh/tiny-url/storage"
 	"github.com/gin-gonic/gin"
 )
@@ -20,12 +21,10 @@ func main() {
 		log.Fatal("failed to load config file", err)
 	}
 
-	cassandra := storage.GetCassandraInstance(cfg.Cassandra)
-	defer cassandra.Session.Close()
-	if err != nil {
-		fmt.Println("[main]<--", err)
-	}
-	fmt.Println("is cassandra session closed?", cassandra.Session.Closed())
+	session := storage.GetCassandraInstance(cfg.Cassandra).Session
+	defer session.Close()
 	cache := storage.GetRedisCache(cfg.Redis)
 	fmt.Println(cache)
+	jwtService := service.NewJwtService(cfg.JWT.TTL, cfg.JWT.Secret, cfg.JWT.Issuer)
+	fmt.Println(*jwtService)
 }

@@ -28,16 +28,23 @@ type Cassandra struct {
 	KeySpace string `json:"key_space"`
 }
 
+type JWT struct {
+	TTL    time.Duration `json:"ttl_minute"`
+	Secret string        `json:"secret"`
+	Issuer string        `json:"issuer"`
+}
+
 type Options struct {
 	Schema string `json:"schema"`
 	Prefix string `json:"Prefix"`
 }
 
 type Config struct {
-	Server    Server    `json:"server"`
-	Redis     Redis     `json:"redis"`
-	Cassandra Cassandra `json:"cassandra"`
-	Options   Options   `json:"options"`
+	Server    `json:"server"`
+	Redis     `json:"redis"`
+	Cassandra `json:"cassandra"`
+	JWT       `json:"jwt"`
+	Options   `json:"options"`
 }
 
 func Load() (*Config, error) {
@@ -49,6 +56,7 @@ func Load() (*Config, error) {
 	if err := json.Unmarshal(b, &config); err != nil {
 		return nil, err
 	}
+	config.JWT.TTL *= time.Minute
 	config.Redis.LFU.TTL *= time.Minute
 	return &config, nil
 }
