@@ -5,6 +5,7 @@ import (
 	"log"
 	"sync"
 
+	"github.com/ctirouzh/tiny-url/config"
 	"github.com/gocql/gocql"
 )
 
@@ -14,15 +15,15 @@ type cassandra struct {
 
 var (
 	cassandraInstance *cassandra
-	once              sync.Once
+	cassandraOnce     sync.Once
 )
 
-func GetCassandraInstance(host, keyspace string) *cassandra {
+func GetCassandraInstance(cfg config.Cassandra) *cassandra {
 	if cassandraInstance == nil {
-		once.Do(func() {
+		cassandraOnce.Do(func() {
 			fmt.Println("[storage][cassandra]--> Creating single cassandra instance...")
-			cluster := gocql.NewCluster(host)
-			cluster.Keyspace = keyspace
+			cluster := gocql.NewCluster(cfg.Host)
+			cluster.Keyspace = cfg.KeySpace
 			session, err := cluster.CreateSession()
 			if err != nil {
 				log.Fatal("[storage][cassndra]-->", err)

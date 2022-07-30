@@ -3,8 +3,8 @@ package storage
 import (
 	"fmt"
 	"sync"
-	"time"
 
+	"github.com/ctirouzh/tiny-url/config"
 	"github.com/go-redis/cache/v8"
 	"github.com/go-redis/redis/v8"
 )
@@ -16,12 +16,12 @@ var (
 	redisClient     *redis.Client
 )
 
-func GetRedisClient(address string) *redis.Client {
+func GetRedisClient(cfg config.Redis) *redis.Client {
 	if redisClient == nil {
 		redisClientOnce.Do(func() {
 			fmt.Println("[storage][redis]--> Creating single redis client...")
 			redisClient = redis.NewClient(&redis.Options{
-				Addr: address,
+				Addr: cfg.Address,
 			})
 		})
 	} else {
@@ -30,13 +30,14 @@ func GetRedisClient(address string) *redis.Client {
 	return redisClient
 }
 
-func GetRedisCache(address string) *cache.Cache {
+func GetRedisCache(cfg config.Redis) *cache.Cache {
 	if redisCache == nil {
 		redisCacheOnce.Do(func() {
 			fmt.Println("[storage][redis]--> Creating single redis cache...")
 			redisCache = cache.New(&cache.Options{
-				Redis:      GetRedisClient(address),
-				LocalCache: cache.NewTinyLFU(1000, time.Minute),
+				Redis: GetRedisClient(cfg),
+				// Cache "Size" keys for "TTL" minutes
+				LocalCache: cache.NewTinyLFU(cfg.LFU.Size, cfg.LFU.TTL),
 			})
 		})
 	} else {

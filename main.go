@@ -6,26 +6,25 @@ import (
 
 	"github.com/ctirouzh/tiny-url/config"
 	"github.com/ctirouzh/tiny-url/storage"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
-	cfg, err := config.Load("./config/config.json")
+	r := gin.Default()
+	r.Use(gin.Logger(), gin.Recovery())
+
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("failed to load config file", err)
 	}
 
-	cassandra := storage.GetCassandraInstance(cfg.Cassandra.Host, cfg.Cassandra.KeySpace)
+	cassandra := storage.GetCassandraInstance(cfg.Cassandra)
 	defer cassandra.Session.Close()
 	if err != nil {
 		fmt.Println("[main]<--", err)
 	}
-
 	fmt.Println("is cassandra session closed?", cassandra.Session.Closed())
-	cache := storage.GetRedisCache(cfg.Redis.Address)
+	cache := storage.GetRedisCache(cfg.Redis)
 	fmt.Println(cache)
-
-	for i := 1; i < 5; i++ {
-		storage.GetRedisCache(cfg.Redis.Address)
-	}
 }

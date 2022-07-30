@@ -6,7 +6,11 @@
     "redis": {
         "host": "localhost",
         "port": "6379",
-        "address": "localhost:6379"
+        "address": "localhost:6379",
+        "lfu": {
+            "size": 10000,
+            "ttl_minute": 1
+        }
     },
     "cassandra": {
         "host": "localhost",
