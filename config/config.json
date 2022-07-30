@@ -1,0 +1,21 @@
+{
+    "server": {
+        "host": "localhost",
+        "port": "8080"
+    },
+    "redis": {
+        "host": "localhost",
+        "port": "6379",
+        "address": "localhost:6379"
+    },
+    "cassandra": {
+        "host": "localhost",
+        "port": "9042",
+        "key_space": "tinyurl"
+
+    },
+    "options": {
+        "schema": "http",
+        "prefix": "localhost:8080"
+    }    
+}
