@@ -1,5 +1,5 @@
 # Tiny-URL
-This is a url shortener service using golang, gin frame work, cassandra database, and redis cache. You can find more details in https://tinyurl.com/bj4bne99.
+This is a url shortener service using golang, gin framework, cassandra database, and redis cache. You can find more details in https://tinyurl.com/bj4bne99.
 
 Install Docker & Go (>1.13)
 
