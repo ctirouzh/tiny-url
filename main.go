@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/ctirouzh/tiny-url/config"
+	"github.com/ctirouzh/tiny-url/controller"
 	"github.com/ctirouzh/tiny-url/middleware"
 	"github.com/ctirouzh/tiny-url/repo"
 	"github.com/ctirouzh/tiny-url/service"
@@ -29,8 +30,12 @@ func main() {
 	cacheRepo := repo.NewCacheRepository(cache, cfg.Redis)
 	urlRepo := repo.NewURLRepository(session, cacheRepo)
 	urlService := service.NewUrlService(urlRepo)
-	fmt.Println("[main]--> urlService:", urlService)
+	urlController := controller.NewURLController(urlService)
 
 	jwtService := service.NewJwtService(cfg.JWT.TTL, cfg.JWT.Secret, cfg.JWT.Issuer)
 	fmt.Println("[main]--> jwtService:", *jwtService)
+
+	r.GET("/:hash", urlController.RedirectURLByHash)
+
+	r.Run(cfg.Server.Host + ":" + cfg.Server.Port)
 }
