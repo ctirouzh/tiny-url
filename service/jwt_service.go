@@ -9,19 +9,6 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-type AccessTokenResponse struct {
-	AccessToken string    `json:"access_token"`
-	TTL         int       `json:"ttl"`
-	ExpiredAt   time.Time `json:"expired_at"`
-	UserID      string    `json:"user_id"`
-}
-
-type UserClaims struct {
-	jwt.StandardClaims
-	Username string `json:"username"`
-	UserID   string `json:"user_id"`
-}
-
 type JwtService struct {
 	ttl    time.Duration
 	secret string
@@ -36,9 +23,9 @@ func NewJwtService(ttl time.Duration, secret string, issuer string) *JwtService 
 	}
 }
 
-func (s *JwtService) GenerateJwtToken(user *model.User) (*AccessTokenResponse, error) {
-	var tokenResp *AccessTokenResponse
-	claims := UserClaims{
+func (s *JwtService) GenerateJwtToken(user *model.User) (*model.AccessTokenResponse, error) {
+	var tokenResp *model.AccessTokenResponse
+	claims := model.UserClaims{
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Add(s.ttl).Unix(),
@@ -52,7 +39,7 @@ func (s *JwtService) GenerateJwtToken(user *model.User) (*AccessTokenResponse, e
 	if err != nil {
 		return nil, err
 	}
-	tokenResp = &AccessTokenResponse{
+	tokenResp = &model.AccessTokenResponse{
 		AccessToken: token,
 		TTL:         int(s.ttl.Seconds()),
 		ExpiredAt:   time.Now().Add(s.ttl),
@@ -61,8 +48,8 @@ func (s *JwtService) GenerateJwtToken(user *model.User) (*AccessTokenResponse, e
 	return tokenResp, nil
 }
 
-func (s *JwtService) VerifyToken(tokenString string) (*UserClaims, error) {
-	claims := &UserClaims{}
+func (s *JwtService) VerifyToken(tokenString string) (*model.UserClaims, error) {
+	claims := &model.UserClaims{}
 
 	token, err := jwt.ParseWithClaims(tokenString, claims,
 		func(token *jwt.Token) (interface{}, error) {
@@ -79,7 +66,7 @@ func (s *JwtService) VerifyToken(tokenString string) (*UserClaims, error) {
 	if !token.Valid {
 		return nil, errors.New("token invalid")
 	}
-	claims, ok := token.Claims.(*UserClaims)
+	claims, ok := token.Claims.(*model.UserClaims)
 	if !ok {
 		return nil, errors.New("claims retrieve failed")
 	}

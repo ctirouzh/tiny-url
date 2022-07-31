@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/ctirouzh/tiny-url/dto"
 	"github.com/ctirouzh/tiny-url/model"
-	"github.com/ctirouzh/tiny-url/service"
 	"github.com/gocql/gocql"
 	"github.com/teris-io/shortid"
 )
@@ -50,7 +50,7 @@ func (r *URLRespository) GetURLByHash(hash string) (*model.URL, error) {
 	return url, nil
 }
 
-func (r *URLRespository) GetUserURLByHash(hash string, user *service.UserClaims) (*model.URL, error) {
+func (r *URLRespository) GetUserURLByHash(hash string, user *model.UserClaims) (*model.URL, error) {
 	var url *model.URL
 	url = r.cacheRepo.GetURL(hash)
 	if url != nil {
@@ -94,7 +94,7 @@ func (r *URLRespository) GetAllURLs() ([]model.URL, error) {
 	return urls, nil
 }
 
-func (r *URLRespository) CreateURL(original_url string, user *model.User) (*model.URL, error) {
+func (r *URLRespository) CreateURL(createURLDto *dto.CreateURL, user *model.User) (*model.URL, error) {
 	hash, err := shortid.Generate()
 	if err != nil {
 		return nil, errors.New("can't generate new hash")
@@ -103,14 +103,14 @@ func (r *URLRespository) CreateURL(original_url string, user *model.User) (*mode
 	var count int
 	r.session.Query(
 		"SELECT COUNT(*) FROM urls WHERE user_id = ? AND original_url = ? ALLOW FILTERING",
-		user.ID.String(), original_url,
+		user.ID.String(), createURLDto.OriginalURL,
 	).Iter().Scan(&count)
 	if count > 0 {
 		return nil, errors.New("url already hashed")
 	}
 	tinyurl = &model.URL{
 		Hash:           hash,
-		OriginalURL:    original_url,
+		OriginalURL:    createURLDto.OriginalURL,
 		CreationDate:   time.Now(),
 		ExpirationDate: time.Now().Add(14 * time.Hour * 24),
 		UserID:         user.ID.String(),

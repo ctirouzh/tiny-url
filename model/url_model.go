@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/ctirouzh/tiny-url/dto"
+)
 
 type URL struct {
 	Hash           string    `json:"hash,omitempty"`
@@ -13,4 +17,11 @@ type URL struct {
 type URLCache interface {
 	SetURL(url *URL)
 	GetURL(hash string) *URL
+}
+
+type URLRepository interface {
+	GetUserURLByHash(hash string, user *UserClaims) (*URL, error)
+	GetURLByHash(hash string) (*URL, error)
+	GetAllURLs() ([]URL, error)
+	CreateURL(createURLDto *dto.CreateURL, user *User) (*URL, error)
 }

@@ -24,10 +24,13 @@ func main() {
 
 	session := storage.GetCassandraInstance(cfg.Cassandra).Session
 	defer session.Close()
+
 	cache := storage.GetRedisCache(cfg.Redis)
 	cacheRepo := repo.NewCacheRepository(cache, cfg.Redis)
 	urlRepo := repo.NewURLRepository(session, cacheRepo)
-	fmt.Println("[main]--> urlRepo:", urlRepo)
+	urlService := service.NewUrlService(urlRepo)
+	fmt.Println("[main]--> urlService:", urlService)
+
 	jwtService := service.NewJwtService(cfg.JWT.TTL, cfg.JWT.Secret, cfg.JWT.Issuer)
 	fmt.Println("[main]--> jwtService:", *jwtService)
 }
