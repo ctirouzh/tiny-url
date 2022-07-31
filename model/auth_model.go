@@ -15,17 +15,20 @@ type AccessTokenResponse struct {
 }
 
 type UserClaims struct {
-	jwt.StandardClaims
 	Username string `json:"username"`
 	UserID   string `json:"user_id"`
 }
 
+type AuthClaims struct {
+	jwt.StandardClaims
+	User *UserClaims `json:"user"`
+}
 type AuthService interface {
 	SignUp() (*User, error)
-	Login(credentials *dto.SignInDto) (*AccessTokenResponse, error)
+	Login(credentials *dto.SignIn) (*AccessTokenResponse, error)
 }
 
 type JwtService interface {
 	GenerateJwtToken(user *User) (*AccessTokenResponse, error)
-	VerifyToken(tokenString string) (*UserClaims, error)
+	VerifyToken(tokenString string) (*AuthClaims, error)
 }

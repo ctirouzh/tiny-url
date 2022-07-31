@@ -1,11 +1,11 @@
 package dto
 
-type SignInDto struct {
+type SignIn struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
-type SignUpDto struct {
+type SignUp struct {
 	Username string `json:"username" binding:"required"`
 	Name     string `json:"name" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`

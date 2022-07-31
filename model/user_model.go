@@ -3,6 +3,7 @@ package model
 import (
 	"time"
 
+	"github.com/ctirouzh/tiny-url/dto"
 	"github.com/gocql/gocql"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -23,4 +24,9 @@ func (u *User) ComparePassword(password string) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+type UserRepository interface {
+	CreateUser(createUserDto *dto.SignUp) (*User, error)
+	ValidateUser(credentials *dto.SignIn) (*User, error)
 }

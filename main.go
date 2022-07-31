@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/ctirouzh/tiny-url/config"
@@ -28,14 +27,30 @@ func main() {
 
 	cache := storage.GetRedisCache(cfg.Redis)
 	cacheRepo := repo.NewCacheRepository(cache, cfg.Redis)
+
 	urlRepo := repo.NewURLRepository(session, cacheRepo)
 	urlService := service.NewUrlService(urlRepo)
 	urlController := controller.NewURLController(urlService)
 
 	jwtService := service.NewJwtService(cfg.JWT.TTL, cfg.JWT.Secret, cfg.JWT.Issuer)
-	fmt.Println("[main]--> jwtService:", *jwtService)
+	userRepo := repo.NewUserRepository(session)
+	authService := service.NewAuthService(userRepo, jwtService)
+	authController := controller.NewAuthController(authService)
 
 	r.GET("/:hash", urlController.RedirectURLByHash)
-
+	api := r.Group("/api")
+	{
+		urls := api.Group("/urls")
+		urls.Use(middleware.AuthorizeWithJwt(jwtService))
+		{
+			urls.GET("/:hash", urlController.GetURLByHash)
+			urls.POST("/", urlController.CreateURL)
+		}
+		auth := api.Group("/auth")
+		{
+			auth.POST("/signup", authController.SignUp)
+			auth.POST("/login", authController.Login)
+		}
+	}
 	r.Run(cfg.Server.Host + ":" + cfg.Server.Port)
 }
