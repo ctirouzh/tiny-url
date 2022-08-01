@@ -30,3 +30,7 @@ func (s *URLService) GetUserURLByHash(hash string, user *model.UserClaims) (*mod
 func (s *URLService) GetURLByHash(hash string) (*model.URL, error) {
 	return s.urlRepo.GetURLByHash(hash)
 }
+
+func (s *URLService) DeleteURL(hash string, user_id string) error {
+	return s.urlRepo.DeleteURL(hash, user_id)
+}

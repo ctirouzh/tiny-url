@@ -55,7 +55,7 @@ func (r *URLRespository) GetURLByHash(hash string) (*model.URL, error) {
 func (r *URLRespository) GetUserURLByHash(hash string, user *model.UserClaims) (*model.URL, error) {
 	var url *model.URL
 	url = r.cacheRepo.GetURL(hash)
-	if url != nil {
+	if url != nil && url.UserID == user.UserID {
 		return url, nil
 	}
 	m := map[string]interface{}{}
@@ -97,20 +97,20 @@ func (r *URLRespository) GetAllURLs() ([]model.URL, error) {
 }
 
 func (r *URLRespository) CreateURL(createURLDto *dto.CreateURL, user *model.User) (*model.URL, error) {
+
 	hash, err := shortid.Generate()
 	if err != nil {
 		return nil, errors.New("can't generate new hash")
 	}
-	var tinyurl *model.URL
+
 	var count int
-	r.session.Query(
-		"SELECT COUNT(*) FROM urls WHERE user_id = ? AND original_url = ? ALLOW FILTERING",
-		user.ID.String(), createURLDto.OriginalURL,
-	).Iter().Scan(&count)
+	query := `SELECT COUNT(*) FROM urls WHERE user_id = ? AND original_url = ? ALLOW FILTERING`
+	r.session.Query(query, user.ID.String(), createURLDto.OriginalURL).Iter().Scan(&count)
 	if count > 0 {
 		return nil, errors.New("url already hashed")
 	}
-	tinyurl = &model.URL{
+
+	tinyurl := &model.URL{
 		Hash:           hash,
 		OriginalURL:    createURLDto.OriginalURL,
 		CreationDate:   time.Now(),
@@ -125,4 +125,19 @@ func (r *URLRespository) CreateURL(createURLDto *dto.CreateURL, user *model.User
 		return nil, err
 	}
 	return tinyurl, nil
+}
+
+func (r *URLRespository) DeleteURL(hash string, user_id string) error {
+	query := `DELETE FROM urls WHERE hash = ? AND user_id = ?`
+	if err := r.session.Query(query, hash, user_id).Exec(); err != nil {
+		return err
+	}
+
+	if r.cacheRepo.GetURL(hash) == nil {
+		return nil
+	}
+	if err := r.cacheRepo.DeleteURL(hash); err != nil {
+		return err
+	}
+	return nil
 }

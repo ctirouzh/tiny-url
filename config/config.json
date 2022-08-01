@@ -20,7 +20,7 @@
         "url_ttl_year": 3
     },
     "jwt": {
-        "ttl_minute": 20, 
+        "ttl_minute": 120, 
         "secret": "set_a_secret_key",
         "issuer": "set_an_issuer"
     },

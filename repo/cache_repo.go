@@ -37,3 +37,11 @@ func (cr *CacheRepository) GetURL(hash string) *model.URL {
 	}
 	return &url
 }
+
+func (cr *CacheRepository) DeleteURL(hash string) error {
+	err := cr.cache.Delete(context.TODO(), hash)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -5,12 +5,12 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 
 - [x] Authentication using jwt.
 - [x] Authenticated users can generate a shorter and unique alias of a given URL.
-- [x] Authenticated users can see the details of thier generated URL.   
+- [x] Authenticated users can see the details of their generated URL.   
 - [x] Given a short link, redirect users to the original link. 
 - [x] Accessibe through REST APIs by other services.
 - [x] Default url ttl in cassandra configuration
-- [ ] Add deleteUrl() api.
-- [ ] Link expiration after a stanadard default timespan.
+- [x] Users can delete their urls
+- [ ] Link expiration after its stanadard default timespan.
 - [ ] Custom expiration time.  
 - [ ] Custom short link.  
 - [ ] Use an API developer key to throttle users based on their allocated quota in createUrl() api.

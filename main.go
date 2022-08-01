@@ -45,6 +45,7 @@ func main() {
 		{
 			urls.GET("/:hash", urlController.GetURLByHash)
 			urls.POST("/", urlController.CreateURL)
+			urls.DELETE("/:hash", urlController.DeleteURL)
 		}
 		auth := api.Group("/auth")
 		{

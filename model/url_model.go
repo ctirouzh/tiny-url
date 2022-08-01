@@ -17,6 +17,7 @@ type URL struct {
 type URLCache interface {
 	SetURL(url *URL)
 	GetURL(hash string) *URL
+	DeleteURL(hash string) error
 }
 
 type URLRepository interface {
@@ -24,4 +25,5 @@ type URLRepository interface {
 	GetURLByHash(hash string) (*URL, error)
 	GetAllURLs() ([]URL, error)
 	CreateURL(createURLDto *dto.CreateURL, user *User) (*URL, error)
+	DeleteURL(hash string, user_id string) error
 }
