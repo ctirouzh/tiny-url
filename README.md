@@ -23,7 +23,7 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 - [ ] Purging or DB cleanup: See https://tinyurl.com/56tje6tt
 - [ ] Telemetry: See https://tinyurl.com/4zrpbupd 
 - [ ] public/private permission level for each URL in database.
-- [ ] Dockerize the app. 
+- [ ] Dockerfile and docker compose.
 
 # Installation
 
