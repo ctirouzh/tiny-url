@@ -20,14 +20,14 @@ func NewAuthController(s *service.AuthService) *AuthController {
 }
 
 func (ctrl *AuthController) SignUp(c *gin.Context) {
-	var userDto dto.SignUp
-	if err := c.ShouldBindJSON(&userDto); err != nil {
+	var dto dto.SignUp
+	if err := c.ShouldBindJSON(&dto); err != nil {
 		c.Error(apperr.New(http.StatusBadRequest, err.Error()))
 		return
 	}
-	user, err := ctrl.service.SignUp(&userDto)
+	user, err := ctrl.service.SignUp(&dto)
 	if err != nil {
-		c.Error(apperr.New(http.StatusBadRequest, err.Error()))
+		c.Error(apperr.New(http.StatusInternalServerError, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": user})
