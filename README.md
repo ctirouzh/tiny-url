@@ -8,6 +8,7 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 - [x] Authenticated users can see the details of thier generated URL.   
 - [x] Given a short link, redirect users to the original link. 
 - [x] Accessibe through REST APIs by other services.
+- [x] Default url ttl in cassandra configuration
 - [ ] Add deleteUrl(api_dev_key, url_key) api.
 - [ ] Link expiration after a stanadard default timespan.
 - [ ] Custom expiration time.  
