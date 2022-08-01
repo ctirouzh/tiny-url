@@ -31,13 +31,13 @@ func (ctrl *URLController) CreateURL(c *gin.Context) {
 	userClaims, isExisted := c.Get("user")
 
 	if !isExisted {
-		c.Error(apperr.New(http.StatusBadRequest, "User Claims Not Found"))
+		c.Error(apperr.New(http.StatusUnauthorized, "user claims not found"))
 		return
 	}
 	user := userClaims.(*model.UserClaims)
 	uuid, err := gocql.ParseUUID(user.UserID)
 	if err != nil {
-		c.Error(apperr.New(http.StatusBadRequest, "User Claims Invalid"))
+		c.Error(apperr.New(http.StatusUnauthorized, "invalid user claims"))
 		return
 	}
 	url, err := ctrl.service.CreateURL(&createURLDto, &model.User{ID: uuid, Username: user.Username})
@@ -50,66 +50,66 @@ func (ctrl *URLController) CreateURL(c *gin.Context) {
 
 func (ctrl *URLController) GetURLByHash(c *gin.Context) {
 
-	var getURLByHashDto dto.GetURLByHash
-	if err := c.ShouldBindUri(&getURLByHashDto); err != nil {
+	var dto dto.GetURLByHash
+	if err := c.ShouldBindUri(&dto); err != nil {
 		c.Error(apperr.New(http.StatusBadRequest, err.Error()))
 		return
 	}
 	userClaims, isExisted := c.Get("user")
 
 	if !isExisted {
-		c.Error(apperr.New(http.StatusBadRequest, "User Claims Not Found"))
+		c.Error(apperr.New(http.StatusUnauthorized, "user claims not found"))
 		return
 	}
 	user := userClaims.(*model.UserClaims)
-	url, err := ctrl.service.GetUserURLByHash(getURLByHashDto.Hash, user)
+	url, err := ctrl.service.GetUserURLByHash(dto.Hash, user)
 	if err != nil {
-		c.Error(apperr.New(http.StatusInternalServerError, err.Error()))
+		c.Error(apperr.New(http.StatusNotFound, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": url})
 }
 
 func (ctrl *URLController) RedirectURLByHash(c *gin.Context) {
-	var getURLByHashDto dto.GetURLByHash
-	if err := c.ShouldBindUri(&getURLByHashDto); err != nil {
+	var dto dto.GetURLByHash
+	if err := c.ShouldBindUri(&dto); err != nil {
 		c.Error(apperr.New(http.StatusBadRequest, err.Error()))
 		return
 	}
-	url, err := ctrl.service.GetURLByHash(getURLByHashDto.Hash)
+	url, err := ctrl.service.GetURLByHash(dto.Hash)
 	if err != nil {
-		c.Error(apperr.New(http.StatusInternalServerError, err.Error()))
+		c.Error(apperr.New(http.StatusNotFound, err.Error()))
 		return
 	}
 	c.Redirect(http.StatusMovedPermanently, url.OriginalURL)
 }
 
 func (ctrl *URLController) DeleteURL(c *gin.Context) {
-	var getURLByHashDto dto.GetURLByHash
-	if err := c.ShouldBindUri(&getURLByHashDto); err != nil {
+	var dto dto.GetURLByHash
+	if err := c.ShouldBindUri(&dto); err != nil {
 		c.Error(apperr.New(http.StatusBadRequest, err.Error()))
 		return
 	}
-	userClaims, isExisted := c.Get("user")
+	userClaims, exists := c.Get("user")
 
-	if !isExisted {
-		c.Error(apperr.New(http.StatusBadRequest, "User Claims Not Found"))
+	if !exists {
+		c.Error(apperr.New(http.StatusUnauthorized, "user claims not found"))
 		return
 	}
 	user := userClaims.(*model.UserClaims)
 	uuid, err := gocql.ParseUUID(user.UserID)
 	if err != nil {
-		c.Error(apperr.New(http.StatusBadRequest, "User Claims Invalid"))
+		c.Error(apperr.New(http.StatusUnauthorized, "invalid user claim"))
 		return
 	}
-	url, err := ctrl.service.GetUserURLByHash(getURLByHashDto.Hash, user)
+	url, err := ctrl.service.GetUserURLByHash(dto.Hash, user)
 	if err != nil {
-		c.Error(apperr.New(http.StatusBadRequest, "url not found"))
+		c.Error(apperr.New(http.StatusNotFound, "url not found"))
 		return
 	}
 	if err := ctrl.service.DeleteURL(url.Hash, uuid.String()); err != nil {
 		c.Error(apperr.New(http.StatusInternalServerError, err.Error()))
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "successfully deleted"})
+	c.JSON(http.StatusNoContent, gin.H{"message": "successfully deleted"})
 }
