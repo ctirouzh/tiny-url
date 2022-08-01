@@ -12,14 +12,16 @@ import (
 )
 
 type URLRespository struct {
-	session   *gocql.Session
-	cacheRepo model.URLCache
+	session       *gocql.Session
+	cacheRepo     model.URLCache
+	defaultUrlTTL time.Duration
 }
 
-func NewURLRepository(s *gocql.Session, c model.URLCache) *URLRespository {
+func NewURLRepository(s *gocql.Session, c model.URLCache, urlTTL time.Duration) *URLRespository {
 	return &URLRespository{
-		session:   s,
-		cacheRepo: c,
+		session:       s,
+		cacheRepo:     c,
+		defaultUrlTTL: urlTTL,
 	}
 }
 
@@ -112,7 +114,7 @@ func (r *URLRespository) CreateURL(createURLDto *dto.CreateURL, user *model.User
 		Hash:           hash,
 		OriginalURL:    createURLDto.OriginalURL,
 		CreationDate:   time.Now(),
-		ExpirationDate: time.Now().Add(14 * time.Hour * 24),
+		ExpirationDate: time.Now().Add(r.defaultUrlTTL),
 		UserID:         user.ID.String(),
 	}
 	ctx := context.Background()

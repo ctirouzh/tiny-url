@@ -24,9 +24,10 @@ type Redis struct {
 }
 
 type Cassandra struct {
-	Host     string `json:"host"`
-	Port     string `json:"port"`
-	KeySpace string `json:"key_space"`
+	Host     string        `json:"host"`
+	Port     string        `json:"port"`
+	KeySpace string        `json:"key_space"`
+	UrlTTL   time.Duration `json:"url_ttl_year"`
 }
 
 type JWT struct {
@@ -60,5 +61,6 @@ func Load() (*Config, error) {
 	config.JWT.TTL *= time.Minute
 	config.Redis.TTL *= time.Hour
 	config.Redis.LFU.TTL *= time.Minute
+	config.Cassandra.UrlTTL *= 365 * 24 * time.Hour
 	return &config, nil
 }

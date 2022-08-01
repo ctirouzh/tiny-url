@@ -28,7 +28,7 @@ func main() {
 	cache := storage.GetRedisCache(cfg.Redis)
 	cacheRepo := repo.NewCacheRepository(cache, cfg.Redis)
 
-	urlRepo := repo.NewURLRepository(session, cacheRepo)
+	urlRepo := repo.NewURLRepository(session, cacheRepo, cfg.Cassandra.UrlTTL)
 	urlService := service.NewUrlService(urlRepo)
 	urlController := controller.NewURLController(urlService)
 

@@ -16,8 +16,8 @@
     "cassandra": {
         "host": "localhost",
         "port": "9042",
-        "key_space": "tinyurl"
-
+        "key_space": "tinyurl",
+        "url_ttl_year": 3
     },
     "jwt": {
         "ttl_minute": 20, 
