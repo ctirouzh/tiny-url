@@ -114,7 +114,7 @@ func (r *URLRespository) CreateURL(createURLDto *dto.CreateURL, user *model.User
 	query := `SELECT COUNT(*) FROM urls WHERE user_id = ? AND original_url = ? ALLOW FILTERING`
 	r.session.Query(query, user.ID.String(), createURLDto.OriginalURL).Iter().Scan(&count)
 	if count > 0 {
-		return nil, errors.New("url already hashed")
+		return nil, errors.New("url already exists")
 	}
 
 	tinyurl := &model.URL{
