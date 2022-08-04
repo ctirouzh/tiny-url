@@ -23,7 +23,7 @@ type URLCache interface {
 type URLRepository interface {
 	GetUserURLByHash(hash string, user *UserClaims) (*URL, error)
 	GetURLByHash(hash string) (*URL, error)
-	GetAllURLs() ([]URL, error)
+	GetAllURLs(user_id string) ([]URL, error)
 	CreateURL(createURLDto *dto.CreateURL, user *User) (*URL, error)
 	DeleteURL(hash string, user_id string) error
 }

@@ -44,6 +44,7 @@ func main() {
 		urls.Use(middleware.AuthorizeWithJwt(jwtService))
 		{
 			urls.GET("/:hash", urlController.GetURLByHash)
+			urls.GET("/", urlController.GetAllURLs)
 			urls.POST("/", urlController.CreateURL)
 			urls.DELETE("/:hash", urlController.DeleteURL)
 		}

@@ -21,6 +21,21 @@ func NewURLController(s *service.URLService) *URLController {
 	}
 }
 
+func (ctrl *URLController) GetAllURLs(c *gin.Context) {
+	userClaims, isExisted := c.Get("user")
+
+	if !isExisted {
+		c.Error(apperr.New(http.StatusUnauthorized, "user claims not found"))
+		return
+	}
+	claims := userClaims.(*model.UserClaims)
+	urls, err := ctrl.service.GetAllURLs(claims.UserID)
+	if err != nil {
+		c.Error(apperr.New(http.StatusNotFound, err.Error()))
+	}
+	c.JSON(http.StatusOK, gin.H{"data": urls})
+}
+
 func (ctrl *URLController) CreateURL(c *gin.Context) {
 
 	var createURLDto dto.CreateURL
@@ -111,5 +126,5 @@ func (ctrl *URLController) DeleteURL(c *gin.Context) {
 		c.Error(apperr.New(http.StatusInternalServerError, err.Error()))
 		return
 	}
-	c.JSON(http.StatusNoContent, gin.H{"message": "successfully deleted"})
+	c.JSON(http.StatusOK, gin.H{"message": "successfully deleted"})
 }

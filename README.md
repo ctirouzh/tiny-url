@@ -10,7 +10,7 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 - [x] Accessible through REST APIs by other services.
 - [x] Default url ttl in cassandra configuration
 - [x] Users can delete their urls
-- [ ] Users can search in their links
+- [x] List links of a user
 - [ ] Link expiration after its standard default timespan.
 - [ ] Custom expiration time.  
 - [ ] Custom short link.  

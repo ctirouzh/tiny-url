@@ -31,18 +31,19 @@ func (r *URLRespository) GetURLByHash(hash string) (*model.URL, error) {
 	if url != nil {
 		return url, nil
 	}
-	m := map[string]interface{}{}
+	row := map[string]interface{}{}
 	var found bool = false
 	query := "SELECT * FROM urls WHERE hash = ? LIMIT 1 ALLOW FILTERING"
-	iterable := r.session.Query(query, hash).Iter()
-	for iterable.MapScan(m) {
+	iter := r.session.Query(query, hash).Iter()
+	defer iter.Close()
+	for iter.MapScan(row) {
 		found = true
 		url = &model.URL{
-			Hash:           m["hash"].(string),
-			OriginalURL:    m["original_url"].(string),
-			CreationDate:   m["creation_date"].(time.Time),
-			ExpirationDate: m["expiration_date"].(time.Time),
-			UserID:         m["user_id"].(string),
+			Hash:           row["hash"].(string),
+			OriginalURL:    row["original_url"].(string),
+			CreationDate:   row["creation_date"].(time.Time),
+			ExpirationDate: row["expiration_date"].(time.Time),
+			UserID:         row["user_id"].(string),
 		}
 	}
 	if !found {
@@ -58,18 +59,19 @@ func (r *URLRespository) GetUserURLByHash(hash string, user *model.UserClaims) (
 	if url != nil && url.UserID == user.UserID {
 		return url, nil
 	}
-	m := map[string]interface{}{}
+	row := map[string]interface{}{}
 	var found bool = false
 	query := "SELECT * FROM urls WHERE user_id = ? AND hash = ? LIMIT 1 ALLOW FILTERING"
-	iterable := r.session.Query(query, user.UserID, hash).Iter()
-	for iterable.MapScan(m) {
+	iter := r.session.Query(query, user.UserID, hash).Iter()
+	defer iter.Close()
+	for iter.MapScan(row) {
 		found = true
 		url = &model.URL{
-			Hash:           m["hash"].(string),
-			OriginalURL:    m["original_url"].(string),
-			CreationDate:   m["creation_date"].(time.Time),
-			ExpirationDate: m["expiration_date"].(time.Time),
-			UserID:         m["user_id"].(string),
+			Hash:           row["hash"].(string),
+			OriginalURL:    row["original_url"].(string),
+			CreationDate:   row["creation_date"].(time.Time),
+			ExpirationDate: row["expiration_date"].(time.Time),
+			UserID:         row["user_id"].(string),
 		}
 	}
 	if !found {
@@ -79,18 +81,23 @@ func (r *URLRespository) GetUserURLByHash(hash string, user *model.UserClaims) (
 	return url, nil
 }
 
-func (r *URLRespository) GetAllURLs() ([]model.URL, error) {
+func (r *URLRespository) GetAllURLs(user_id string) ([]model.URL, error) {
 	var urls []model.URL
-	m := map[string]interface{}{}
-	query := "SELECT * FROM urls"
-	iterable := r.session.Query(query).Iter()
-	for iterable.MapScan(m) {
+
+	query := `SELECT * FROM urls WHERE user_id = ?`
+	iter := r.session.Query(query, user_id).Iter()
+	defer iter.Close()
+	for {
+		row := make(map[string]interface{})
+		if !iter.MapScan(row) {
+			break
+		}
 		urls = append(urls, model.URL{
-			Hash:           m["hash"].(string),
-			OriginalURL:    m["original_url"].(string),
-			CreationDate:   m["creation_date"].(time.Time),
-			ExpirationDate: m["expiration_date"].(time.Time),
-			UserID:         m["user_id"].(string),
+			Hash:           row["hash"].(string),
+			OriginalURL:    row["original_url"].(string),
+			CreationDate:   row["creation_date"].(time.Time),
+			ExpirationDate: row["expiration_date"].(time.Time),
+			UserID:         row["user_id"].(string),
 		})
 	}
 	return urls, nil

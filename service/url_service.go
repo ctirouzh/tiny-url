@@ -15,8 +15,8 @@ func NewUrlService(r model.URLRepository) *URLService {
 	}
 }
 
-func (s *URLService) GetAllURLs() ([]model.URL, error) {
-	return s.urlRepo.GetAllURLs()
+func (s *URLService) GetAllURLs(user_id string) ([]model.URL, error) {
+	return s.urlRepo.GetAllURLs(user_id)
 }
 
 func (s *URLService) CreateURL(createURLDto *dto.CreateURL, user *model.User) (*model.URL, error) {
