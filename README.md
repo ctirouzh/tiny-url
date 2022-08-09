@@ -10,20 +10,20 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 :heavy_check_mark: Accessible through REST APIs by other services.<br/>
 :heavy_check_mark: Default url ttl in cassandra configuration. <br/>
 :heavy_check_mark: Users can delete their urls. <br/>
-✅:heavy_check_mark: List links of a user. <br/>
-❌ Link expiration after its standard default timespan. <br/>
-❌ Custom expiration time. <br/> 
-❌ Custom short link.  <br/>
-❌ Use an API developer key to throttle users based on their allocated quota in createUrl() api.<br/>
-❌ Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
-❌ Key Generation Service (KGS) instead of github.com/teris-io/shortid package? <br/>
-❌ Data partitioning and replication (Hash Based Partitioning). <br/>
-❌ Cache eviction policy (LRU, Linked Hash Map). <br/>
-❌ Load balancer (LB): See https://tinyurl.com/bdfnc9pk. <br/>
-❌ Purging or DB cleanup: See https://tinyurl.com/56tje6tt. <br/>
-❌ Telemetry: See https://tinyurl.com/4zrpbupd. <br/>
-❌ public/private permission level for each URL in database. <br/>
-❌ Dockerfile and docker compose. <br/>
+:heavy_check_mark: List links of a user. <br/>
+:x: Link expiration after its standard default timespan. <br/>
+:x: Custom expiration time. <br/> 
+:x: Custom short link.  <br/>
+:x: Use an API developer key to throttle users based on their allocated quota in createUrl() api.<br/>
+:x: Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
+:x: Key Generation Service (KGS) instead of github.com/teris-io/shortid package? <br/>
+:x: Data partitioning and replication (Hash Based Partitioning). <br/>
+:x: Cache eviction policy (LRU, Linked Hash Map). <br/>
+:x: Load balancer (LB): See https://tinyurl.com/bdfnc9pk. <br/>
+:x: Purging or DB cleanup: See https://tinyurl.com/56tje6tt. <br/>
+:x: Telemetry: See https://tinyurl.com/4zrpbupd. <br/>
+:x: public/private permission level for each URL in database. <br/>
+:x: Dockerfile and docker compose. <br/>
 
 # Installation
 
