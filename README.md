@@ -3,14 +3,14 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 
 # Features
 
-:heavy_check_mark: Authentication using jwt.
-:heavy_check_mark: Authenticated users can generate a shorter and unique alias of a given URL.
-:heavy_check_mark: Authenticated users can see the details of their generated URL.   
-:heavy_check_mark: Given a short link, redirect users to the original link. 
-:heavy_check_mark: Accessible through REST APIs by other services.
-:heavy_check_mark: Default url ttl in cassandra configuration
-:heavy_check_mark: Users can delete their urls
-:heavy_check_mark: List links of a user
+- [:heavy_check_mark:] Authentication using jwt.
+- :heavy_check_mark: Authenticated users can generate a shorter and unique alias of a given URL.
+- :heavy_check_mark: Authenticated users can see the details of their generated URL.   
+- :heavy_check_mark: Given a short link, redirect users to the original link. 
+- :heavy_check_mark: Accessible through REST APIs by other services.
+- :heavy_check_mark: Default url ttl in cassandra configuration
+- :heavy_check_mark: Users can delete their urls
+- :heavy_check_mark: List links of a user
 - [ ] Link expiration after its standard default timespan.
 - [ ] Custom expiration time.  
 - [ ] Custom short link.  
