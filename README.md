@@ -3,27 +3,27 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 
 # Features
 
-- :✅: Authentication using jwt. <br/>
-- :heavy_check_mark: Authenticated users can generate a shorter and unique alias of a given URL.<br/>
-- :heavy_check_mark: Authenticated users can see the details of their generated URL.<br/>   
-- :heavy_check_mark: Given a short link, redirect users to the original link. <br/>
-- :heavy_check_mark: Accessible through REST APIs by other services.<br/>
-- :heavy_check_mark: Default url ttl in cassandra configuration. <br/>
-- :heavy_check_mark: Users can delete their urls. <br/>
-- :heavy_check_mark: List links of a user. <br/>
-- :white_check_mark: Link expiration after its standard default timespan. <br/>
-- :white_check_mark: Custom expiration time. <br/> 
-- :white_check_mark: Custom short link.  <br/>
-- :white_check_mark: Use an API developer key to throttle users based on their allocated quota in createUrl() api.<br/>
-- :❌: Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
-- :white_check_mark: Key Generation Service (KGS) instead of github.com/teris-io/shortid package? <br/>
-- :white_check_mark: Data partitioning and replication (Hash Based Partitioning). <br/>
-- :white_check_mark: Cache eviction policy (LRU, Linked Hash Map). <br/>
-- :white_check_mark: Load balancer (LB): See https://tinyurl.com/bdfnc9pk. <br/>
-- :white_check_mark: Purging or DB cleanup: See https://tinyurl.com/56tje6tt. <br/>
-- :white_check_mark: Telemetry: See https://tinyurl.com/4zrpbupd. <br/>
-- :white_check_mark: public/private permission level for each URL in database. <br/>
-- :white_check_mark: Dockerfile and docker compose. <br/>
+:heavy_check_mark: Authentication using jwt. <br/>
+:heavy_check_mark: Authenticated users can generate a shorter and unique alias of a given URL.<br/>
+:heavy_check_mark: Authenticated users can see the details of their generated URL.<br/>   
+:heavy_check_mark: Given a short link, redirect users to the original link. <br/>
+:heavy_check_mark: Accessible through REST APIs by other services.<br/>
+:heavy_check_mark: Default url ttl in cassandra configuration. <br/>
+:heavy_check_mark: Users can delete their urls. <br/>
+✅:heavy_check_mark: List links of a user. <br/>
+❌ Link expiration after its standard default timespan. <br/>
+❌ Custom expiration time. <br/> 
+❌ Custom short link.  <br/>
+❌ Use an API developer key to throttle users based on their allocated quota in createUrl() api.<br/>
+❌ Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
+❌ Key Generation Service (KGS) instead of github.com/teris-io/shortid package? <br/>
+❌ Data partitioning and replication (Hash Based Partitioning). <br/>
+❌ Cache eviction policy (LRU, Linked Hash Map). <br/>
+❌ Load balancer (LB): See https://tinyurl.com/bdfnc9pk. <br/>
+❌ Purging or DB cleanup: See https://tinyurl.com/56tje6tt. <br/>
+❌ Telemetry: See https://tinyurl.com/4zrpbupd. <br/>
+❌ public/private permission level for each URL in database. <br/>
+❌ Dockerfile and docker compose. <br/>
 
 # Installation
 
