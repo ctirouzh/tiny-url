@@ -3,7 +3,7 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 
 # Features
 
-- [x] Authentication using jwt.
+- :heavy_check_mark: Authentication using jwt.
 - [x] Authenticated users can generate a shorter and unique alias of a given URL.
 - [x] Authenticated users can see the details of their generated URL.   
 - [x] Given a short link, redirect users to the original link. 
