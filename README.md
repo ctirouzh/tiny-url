@@ -16,7 +16,7 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 :x: Custom short link.  <br/>
 :x: Use an API developer key to throttle users based on their allocated quota in createUrl() api.<br/>
 :x: Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
-:x: Key Generation Service (KGS) instead of github.com/teris-io/shortid package? <br/>
+:question: Key Generation Service (KGS) instead of github.com/teris-io/shortid package <br/>
 :x: Data partitioning and replication (Hash Based Partitioning). <br/>
 :x: Cache eviction policy (LRU, Linked Hash Map). <br/>
 :x: Load balancer (LB): See https://tinyurl.com/bdfnc9pk. <br/>
