@@ -3,8 +3,11 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 
 # Features
 
-- :heavy_check_mark: Authentication using jwt. <br/>
-- :heavy_check_mark: Authenticated users can generate a shorter and unique alias of a given URL.<br/>
+:*:\check::✅
+:*:\cross::❌
+
+- :\check: Authentication using jwt. <br/>
+- :heavy_cross_mark: Authenticated users can generate a shorter and unique alias of a given URL.<br/>
 - :heavy_check_mark: Authenticated users can see the details of their generated URL.<br/>   
 - :heavy_check_mark: Given a short link, redirect users to the original link. <br/>
 - :heavy_check_mark: Accessible through REST APIs by other services.<br/>
@@ -15,7 +18,7 @@ This is a simple URL shortener service using golang, gin framework, cassandra da
 - :white_check_mark: Custom expiration time. <br/> 
 - :white_check_mark: Custom short link.  <br/>
 - :white_check_mark: Use an API developer key to throttle users based on their allocated quota in createUrl() api.<br/>
-- :white_check_mark: Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
+- :cross: Limit users via their api_dev_key to a certain number of URL creations and redirections per some time period (which may be set to a different duration per developer key). <br/>
 - :white_check_mark: Key Generation Service (KGS) instead of github.com/teris-io/shortid package? <br/>
 - :white_check_mark: Data partitioning and replication (Hash Based Partitioning). <br/>
 - :white_check_mark: Cache eviction policy (LRU, Linked Hash Map). <br/>
